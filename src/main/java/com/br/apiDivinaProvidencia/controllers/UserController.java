@@ -32,7 +32,7 @@ public class UserController {
 	@Autowired
 	private JwtService jwtService;
 
-	@PostMapping("save")
+	@PostMapping(path = "/save")
 	public User save(@RequestBody User user) {
 		String senhaCriptografada = new BCryptPasswordEncoder().encode(user.getPassword());
 		user.setPassword(senhaCriptografada);
