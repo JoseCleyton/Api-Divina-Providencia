@@ -1,0 +1,14 @@
+1585928750931	Rename type 'Users'
+1585929269216	Delete element
+1585929321321	Rename type 'UserServiceI'
+1585929345202	Rename compilation unit 'UserService.java'
+1585929384251	Delete element
+1585931728389	Rename local variable 'bindingResult'
+1586021846402	Rename field 'cliente'
+1586022380159	Rename field 'nome'
+1586024329979	Rename type 'Cliente'
+1586024429918	Rename type 'Client'
+1586024440398	Rename type 'Order'
+1586024444893	Rename type 'Orderrepository'
+1586024661555	Move compilation unit
+1586024693967	Rename type 'CashierRepositoryImpl'

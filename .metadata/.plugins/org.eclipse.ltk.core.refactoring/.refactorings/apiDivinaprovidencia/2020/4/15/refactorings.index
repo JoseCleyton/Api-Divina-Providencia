@@ -1,0 +1,16 @@
+1586191439386	Rename local variable 'userAux'
+1586191450234	Rename local variable 'user'
+1586208415809	Rename field 'ordersIten'
+1586359357173	Rename field 'ordersIten'
+1586442521278	Rename type 'Stock'
+1586443701665	Encapsulate field 'product'
+1586443747670	Encapsulate field 'quantity'
+1586444286379	Encapsulate field 'iten'
+1586445264600	Encapsulate field 'quantity'
+1586445268527	Encapsulate field 'product'
+1586445540827	Encapsulate field 'quantityInStock'
+1586445961886	Delete element
+1586445971178	Delete element
+1586529560968	Rename type 'ReportCashier'
+1586529918974	Move compilation unit
+1586529928967	Delete element
