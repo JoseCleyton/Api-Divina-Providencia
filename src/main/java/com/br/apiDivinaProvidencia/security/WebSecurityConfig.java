@@ -11,6 +11,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.br.apiDivinaProvidencia.filter.JwtFilter;
@@ -43,13 +44,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 
-		http.csrf().disable().authorizeRequests().antMatchers("/orders/**").hasRole("ADMIN")
+		http.cors().configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues())
+				.and().csrf().disable()
+				.authorizeRequests().antMatchers("/orders/**").hasRole("ADMIN")
 				.antMatchers("/products/**").hasRole("ADMIN").antMatchers("/cashier/**").hasRole("ADMIN")
 				.antMatchers("/stock/**").hasRole("ADMIN").antMatchers("/client/**").hasRole("ADMIN")
-				.antMatchers("/reportCashier/**").hasRole("ADMIN").antMatchers(HttpMethod.POST, "/user/**")
-				.permitAll().anyRequest().authenticated().and().sessionManagement()
+				.antMatchers("/reportCashier/**").hasRole("ADMIN").antMatchers(HttpMethod.POST, "/user/**").permitAll()
+				.anyRequest().authenticated().and().sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
 				.addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class);
 
 	}
+
 }

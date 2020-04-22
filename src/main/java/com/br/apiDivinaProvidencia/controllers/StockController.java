@@ -19,7 +19,6 @@ import com.br.apiDivinaProvidencia.responses.Response;
 import com.br.apiDivinaProvidencia.services.StockService;
 
 @RestController
-@CrossOrigin
 @RequestMapping(path = "/stock")
 public class StockController {
 

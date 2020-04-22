@@ -103,7 +103,6 @@ public class OrderController {
 	}
 
 	@PutMapping(path = "delete")
-	@CrossOrigin
 	public ResponseEntity<Response<Order>> deleteOrder(@Valid @RequestBody Order order, BindingResult result) {
 		order.setDateClose(new Date());
 		if (result.hasErrors()) {

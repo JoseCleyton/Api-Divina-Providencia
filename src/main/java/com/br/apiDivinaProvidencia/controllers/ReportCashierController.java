@@ -15,7 +15,6 @@ import com.br.apiDivinaProvidencia.documents.ReportCashier;
 import com.br.apiDivinaProvidencia.services.ReportCashierService;
 
 @RestController
-@CrossOrigin
 @RequestMapping(path = "/reportCashier")
 public class ReportCashierController {
 	@Autowired

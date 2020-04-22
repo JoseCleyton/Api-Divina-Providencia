@@ -27,7 +27,7 @@ public class JwtService {
 		LocalDateTime dateHourExpiration = LocalDateTime.now().plusMinutes(exp);
 		Date date = Date.from(dateHourExpiration.atZone(ZoneId.systemDefault()).toInstant());
 
-		return Jwts.builder().setSubject(user.getLogin()).setExpiration(date)
+		return Jwts.builder().setSubject(user.getLogin())
 				.signWith(SignatureAlgorithm.HS512, this.secret).compact();
 
 	}
