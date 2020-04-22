@@ -49,7 +49,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-//cors().configurationSource(corsConfigurationSource()).and().
+
 		http.csrf().disable().authorizeRequests().antMatchers("/orders/**").hasRole("ADMIN").antMatchers("/products/**")
 				.hasRole("ADMIN").antMatchers("/cashier/**").hasRole("ADMIN").antMatchers("/stock/**").hasRole("ADMIN")
 				.antMatchers("/client/**").hasRole("ADMIN").antMatchers("/reportCashier/**").hasRole("ADMIN")
@@ -58,18 +58,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class)
 				.addFilterBefore(new CorsFilter(), ChannelProcessingFilter.class);
 
-	}
-
-	// @Bean
-	CorsConfigurationSource corsConfigurationSource() {
-		CorsConfiguration configuration = new CorsConfiguration();
-		configuration.setAllowedOrigins(Arrays.asList("*"));
-		configuration.setAllowedHeaders(Arrays.asList("Access-Control-Allow-Origin", "Access-Control-Allow-Headers",
-				"Origin", "X-Requested-With", "Content-Type", "Accept"));
-		configuration.setAllowedMethods(Arrays.asList("GET", "POST", "OPTIONS", "PUT", "DELETE"));
-		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-		source.registerCorsConfiguration("/**", configuration);
-		return source;
 	}
 
 }
