@@ -25,9 +25,10 @@ public class CashierController {
 	}
 	@PostMapping
 	public void insertValue(@RequestBody double value){		
-		this.cashierService.updateCashier(value);
+		this.cashierService.updateCashier(value, "insert");
 	}
-	public void updateCashier(double valueOrder) {
-		this.cashierService.updateCashier(valueOrder);
+	@PostMapping(path="withdrawValue")
+	public void withdrawValue(@RequestBody double value) {
+		this.cashierService.updateCashier(value, "withdraw");
 	}
 }

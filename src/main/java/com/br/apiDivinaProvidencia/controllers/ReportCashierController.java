@@ -29,5 +29,9 @@ public class ReportCashierController {
 	public ResponseEntity<ReportCashier> insert(@RequestBody ReportCashier reportCashier) {
 		return ResponseEntity.ok(this.reportCashierService.insert(reportCashier));
 	}
+	@PostMapping(path="withdrawValue")
+	public ResponseEntity<ReportCashier> withdrawValue(@RequestBody ReportCashier reportCashier) {
+		return ResponseEntity.ok(this.reportCashierService.withdrawValue(reportCashier));
+	}
 
 }

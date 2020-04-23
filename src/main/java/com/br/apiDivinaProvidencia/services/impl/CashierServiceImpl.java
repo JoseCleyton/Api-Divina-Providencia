@@ -30,23 +30,13 @@ public class CashierServiceImpl implements CashierService {
 	}
 
 	@Override
-	public Cashier insertValue(Cashier cashier) {
+	public void updateCashier(double valueOrder, String operation) {
 		double valueCashier = getValueCashier();
-		valueCashier += cashier.getValueCashier();
-		Cashier ca = new Cashier();
-		List<Cashier> cashierList = this.cashierRepository.findAll();
-		for (Cashier c : cashierList) {
-			ca = c;
+		if (operation.trim().equals("insert")) {
+			valueCashier += valueOrder;
+		} else if (operation.trim().equals("withdraw")) {
+			valueCashier -= valueOrder;
 		}
-		cashier.setValueCashier(valueCashier);
-		return this.cashierRepository.save(ca);
-
-	}
-
-	@Override
-	public void updateCashier(double valueOrder) {
-		double valueCashier = getValueCashier();
-		valueCashier += valueOrder;
 		Cashier cashier = new Cashier();
 		List<Cashier> cashierList = this.cashierRepository.findAll();
 		for (Cashier c : cashierList) {

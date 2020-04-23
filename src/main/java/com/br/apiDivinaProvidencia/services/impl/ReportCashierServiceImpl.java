@@ -24,4 +24,9 @@ public class ReportCashierServiceImpl implements ReportCashierService {
 		return this.reportCashierRepository.save(reportCashier);
 	}
 
+	@Override
+	public ReportCashier withdrawValue(ReportCashier reportCashier) {
+		return this.reportCashierRepository.save(reportCashier);
+	}
+
 }
