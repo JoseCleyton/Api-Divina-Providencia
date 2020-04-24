@@ -45,7 +45,7 @@ public class UserController {
 			throws UsernameNotFoundException {
 		try {
 			User user = new User(credentialsDTO.getLogin(), credentialsDTO.getPassword());
-			UserDetails userAutheticated = this.userService.auhtehticate(user);
+			User userAutheticated = this.userService.auhtehticate(user);
 			String token = this.jwtService.generatedToken(user);
 			return ResponseEntity.ok(new TokenDTO(user.getLogin(), token));
 

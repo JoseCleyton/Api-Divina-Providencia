@@ -34,15 +34,13 @@ public class UserServiceImpl implements UserDetailsService {
 
 	}
 
-	public UserDetails auhtehticate(User user) throws PasswordInvalid {
-		UserDetails u = this.loadUserByUsername(user.getLogin());
-		boolean passwordOk = passwordEncoder.matches(user.getPassword(),
-				new BCryptPasswordEncoder().encode(user.getPassword()));
-		if (!passwordOk) {
-			throw new PasswordInvalid("Senha inválida !!! ");
-		} else {
+	public User auhtehticate(User user) throws PasswordInvalid {
+		this.loadUserByUsername(user.getLogin());
+		User u = this.userRepository.findByLogin(user.getLogin());
+		if (passwordEncoder.matches(user.getPassword(), u.getPassword())) {
 			return u;
 		}
+		throw new PasswordInvalid("Senha inválida !!! ");
 
 	}
 

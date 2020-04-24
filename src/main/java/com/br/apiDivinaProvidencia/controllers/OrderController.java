@@ -88,8 +88,7 @@ public class OrderController {
 		return ResponseEntity.ok(new Response<Order>(this.orderService.insert(order)));
 	}
 
-	@PutMapping(path = "checkout")
-	@CrossOrigin
+	@PutMapping(path = "/checkout")
 	public ResponseEntity<Response<Order>> checkoutOrder(@Valid @RequestBody Order order, BindingResult result) {
 		order.setDateClose(new Date());
 		if (result.hasErrors()) {
