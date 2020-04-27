@@ -53,8 +53,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http.csrf().disable().authorizeRequests().antMatchers("/orders/**").hasRole("ADMIN").antMatchers("/products/**")
 				.hasRole("ADMIN").antMatchers("/cashier/**").hasRole("ADMIN").antMatchers("/stock/**").hasRole("ADMIN")
 				.antMatchers("/client/**").hasRole("ADMIN").antMatchers("/reportCashier/**").hasRole("ADMIN")
-				.antMatchers(HttpMethod.POST, "/user/**").permitAll().anyRequest().authenticated().and()
-				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+				.antMatchers("/accountsReceivable/**").hasRole("ADMIN").antMatchers(HttpMethod.POST, "/user/**")
+				.permitAll().anyRequest().authenticated().and().sessionManagement()
+				.sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
 				.addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class)
 				.addFilterBefore(new CorsFilter(), ChannelProcessingFilter.class);
 
