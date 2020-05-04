@@ -8,5 +8,6 @@ public interface AccountsReceivableService {
 	List<AccountsReceivable> findAll();
 	AccountsReceivable checkout(AccountsReceivable accountsReceivable);
 	AccountsReceivable checkin(AccountsReceivable accountsReceivable);
+	AccountsReceivable findById(String id);
 	
 }

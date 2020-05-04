@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserDetailsService {
 
 	}
 
-	public User auhtehticate(User user) throws PasswordInvalid {
+	public User authenticate(User user) throws PasswordInvalid {
 		this.loadUserByUsername(user.getLogin());
 		User u = this.userRepository.findByLogin(user.getLogin());
 		if (passwordEncoder.matches(user.getPassword(), u.getPassword())) {
@@ -47,4 +47,12 @@ public class UserServiceImpl implements UserDetailsService {
 	public User save(User user) {
 		return this.userRepository.save(user);
 	}
+	public User update(User user) {
+		return this.userRepository.save(user);
+	}
+	
+	public User getUserByLogin(String login) {
+		return this.userRepository.findByLogin(login);
+	}
+
 }

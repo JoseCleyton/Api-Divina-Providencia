@@ -11,42 +11,43 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
 import java.util.Date;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 
 @Service
 public class JwtService {
 
-	@Value("${security.jwt.expiration}")
-	private String expiration;
 	@Value("${jwt.secret}")
 	private String secret;
 
 	public String generatedToken(User user) {
-		long exp = Long.valueOf(this.expiration);
-		LocalDateTime dateHourExpiration = LocalDateTime.now().plusMinutes(exp);
-		Date date = Date.from(dateHourExpiration.atZone(ZoneId.systemDefault()).toInstant());
 
-		return Jwts.builder().setSubject(user.getLogin())
-				.signWith(SignatureAlgorithm.HS512, this.secret).compact();
+		return Jwts.builder().setSubject(user.getLogin()).signWith(SignatureAlgorithm.HS512, this.secret).compact();
 
 	}
 
+	public String generatedTokenWithExpirationSendEmail(String email, String expiracao) {
+		long expString = Long.valueOf(expiracao);
+		LocalDateTime dataHoraExpiracao = LocalDateTime.now().plusMinutes(expString);
+		Instant instant = dataHoraExpiracao.atZone(ZoneId.systemDefault()).toInstant();
+		Date data = Date.from(instant);
+
+		return Jwts.builder().setSubject(email).setExpiration(data).signWith(SignatureAlgorithm.HS512, this.secret)
+				.compact();
+	}
+
 	private Claims getClaims(String token) throws ExpiredJwtException {
-		return Jwts.parser()
-				.setSigningKey(this.secret).parseClaimsJws(token).getBody();
+		return Jwts.parser().setSigningKey(this.secret).parseClaimsJws(token).getBody();
 	}
 
 	public boolean tokenIsValid(String token) {
 
 		try {
-
-			Claims claims = this.getClaims(token);
-			Date expiration = claims.getExpiration();
-			LocalDateTime dateHourExpiration = expiration.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-
-			return !LocalDateTime.now().isAfter(dateHourExpiration);
-
+			Claims claims = getClaims(token);
+			Date dataExpiracao = claims.getExpiration();
+			LocalDateTime data = dataExpiracao.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+			return !LocalDateTime.now().isAfter(data);
 		} catch (Exception e) {
 			return false;
 		}

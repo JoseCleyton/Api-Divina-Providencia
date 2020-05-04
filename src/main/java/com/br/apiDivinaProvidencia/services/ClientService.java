@@ -4,8 +4,6 @@ import java.util.List;
 
 import com.br.apiDivinaProvidencia.documents.Client;
 
-
-
 public interface ClientService {
 	List<Client> findAll();
 	Client findById(String id);

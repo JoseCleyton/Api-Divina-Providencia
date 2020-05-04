@@ -29,4 +29,15 @@ public class AccountsReceivableServiceImpl implements AccountsReceivableService 
 		return this.accountsReceivableRepository.save(accountsReceivable);
 	}
 
+	@Override
+	public AccountsReceivable findById(String id) {
+		List<AccountsReceivable> accountsReceivables = this.accountsReceivableRepository.findAll();
+		for (AccountsReceivable accountsReceivable : accountsReceivables) {
+			if (accountsReceivable.getId() == id) {
+				return accountsReceivable;
+			}
+		}
+		return null;
+	}
+
 }

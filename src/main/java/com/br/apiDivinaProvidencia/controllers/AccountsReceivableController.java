@@ -1,5 +1,6 @@
 package com.br.apiDivinaProvidencia.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,26 +13,43 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.br.apiDivinaProvidencia.documents.AccountsReceivable;
-import com.br.apiDivinaProvidencia.documents.Order;
 import com.br.apiDivinaProvidencia.services.AccountsReceivableService;
 
 @RestController
-@RequestMapping(path="accountsReceivable")
+@RequestMapping(path = "accountsReceivable")
 public class AccountsReceivableController {
 
 	@Autowired
 	private AccountsReceivableService accountsReceivableService;
 
 	@GetMapping
-	public ResponseEntity<List<AccountsReceivable>> findAll(){
+	public ResponseEntity<List<AccountsReceivable>> findAll() {
 		return ResponseEntity.ok(this.accountsReceivableService.findAll());
 	}
+
+	@GetMapping(path = "opens")
+	public ResponseEntity<List<AccountsReceivable>> findAllOpens() {
+		List<AccountsReceivable> accountsReceivables = this.accountsReceivableService.findAll();
+		List<AccountsReceivable> accountsReceivablesOpens = new ArrayList<>();
+		for (AccountsReceivable accountsReceivable : accountsReceivables) {
+			if (!accountsReceivable.isCheckout()) {
+				accountsReceivablesOpens.add(accountsReceivable);
+			}
+		}
+		return ResponseEntity.ok(accountsReceivablesOpens);
+	}
+
 	@PostMapping
-	public ResponseEntity<AccountsReceivable> checkin(@RequestBody AccountsReceivable accountsReceivable){
+	public ResponseEntity<AccountsReceivable> checkin(@RequestBody AccountsReceivable accountsReceivable) {
 		return ResponseEntity.ok(this.accountsReceivableService.checkin(accountsReceivable));
 	}
+
 	@PutMapping
-	public ResponseEntity<AccountsReceivable> checkout(AccountsReceivable accountsReceivable){
+	public ResponseEntity<AccountsReceivable> checkout(@RequestBody AccountsReceivable accountsReceivable) {
+		accountsReceivable.setCheckout(true);
+		if(true | true) {
+			
+		}
 		return ResponseEntity.ok(this.accountsReceivableService.checkout(accountsReceivable));
 	}
 }
