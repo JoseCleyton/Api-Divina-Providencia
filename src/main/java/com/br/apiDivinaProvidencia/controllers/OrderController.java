@@ -74,10 +74,7 @@ public class OrderController {
 
 	@PostMapping
 	public ResponseEntity<Response<Order>> insert(@Valid @RequestBody Order order, BindingResult result) {
-		order.setOrderDate(new Date());
-		order.setOrderMonth(new Date().getMonth() + 1);
-		order.setStatus("aberto");
-
+			order.setStatus("aberto");
 		if (result.hasErrors()) {
 			List<String> listError = new ArrayList<>();
 			result.getAllErrors().forEach(e -> {
@@ -90,7 +87,6 @@ public class OrderController {
 
 	@PutMapping(path = "/checkout")
 	public ResponseEntity<Response<Order>> checkoutOrder(@Valid @RequestBody Order order, BindingResult result) {
-		order.setDateClose(new Date());
 		if (result.hasErrors()) {
 			List<String> listError = new ArrayList<>();
 			result.getAllErrors().forEach(e -> {
@@ -101,9 +97,8 @@ public class OrderController {
 		return ResponseEntity.ok(new Response<Order>(this.orderService.updateOrder(order)));
 	}
 
-	@PutMapping(path = "delete")
-	public ResponseEntity<Response<Order>> deleteOrder(@Valid @RequestBody Order order, BindingResult result) {
-		order.setDateClose(new Date());
+	@PutMapping(path = "cancel")
+	public ResponseEntity<Response<Order>> cancelOrder(@Valid @RequestBody Order order, BindingResult result) {
 		if (result.hasErrors()) {
 			List<String> listError = new ArrayList<>();
 			result.getAllErrors().forEach(e -> {

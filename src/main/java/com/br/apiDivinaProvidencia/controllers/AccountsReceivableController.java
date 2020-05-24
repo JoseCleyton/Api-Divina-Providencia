@@ -44,12 +44,13 @@ public class AccountsReceivableController {
 		return ResponseEntity.ok(this.accountsReceivableService.checkin(accountsReceivable));
 	}
 
-	@PutMapping
+	@PutMapping(path="checkout")
 	public ResponseEntity<AccountsReceivable> checkout(@RequestBody AccountsReceivable accountsReceivable) {
 		accountsReceivable.setCheckout(true);
-		if(true | true) {
-			
-		}
 		return ResponseEntity.ok(this.accountsReceivableService.checkout(accountsReceivable));
+	}
+	@PutMapping(path="payInstallments")
+	public ResponseEntity<AccountsReceivable> payInstallments(@RequestBody AccountsReceivable accountsReceivable) {
+		return ResponseEntity.ok(this.accountsReceivableService.payInstallments(accountsReceivable));
 	}
 }

@@ -40,4 +40,9 @@ public class AccountsReceivableServiceImpl implements AccountsReceivableService 
 		return null;
 	}
 
+	@Override
+	public AccountsReceivable payInstallments(AccountsReceivable accountsReceivable) {
+		return this.accountsReceivableRepository.save(accountsReceivable);
+	}
+
 }

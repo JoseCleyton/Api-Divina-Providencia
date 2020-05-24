@@ -1,6 +1,5 @@
 package com.br.apiDivinaProvidencia.documents;
 
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.annotation.Id;
@@ -11,9 +10,9 @@ public class Order {
 
 	@Id
 	private String id;
-	private Date orderDate;
+	private String orderDate;
 	private String status;
-	private Date dateClose;
+	private String dateClose;
 	private String client;
 	private List<OrderIten> orderItens;
 	private double orderValue;
@@ -30,10 +29,10 @@ public class Order {
 	public void setId(String id) {
 		this.id = id;
 	}
-	public Date getOrderDate() {
+	public String getOrderDate() {
 		return orderDate;
 	}
-	public void setOrderDate(Date orderDate) {
+	public void setOrderDate(String orderDate) {
 		this.orderDate = orderDate;
 	}
 	public String getStatus() {
@@ -42,10 +41,10 @@ public class Order {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	public Date getDateClose() {
+	public String getDateClose() {
 		return dateClose;
 	}
-	public void setDateClose(Date dateClose) {
+	public void setDateClose(String dateClose) {
 		this.dateClose = dateClose;
 	}
 	public String getClient() {

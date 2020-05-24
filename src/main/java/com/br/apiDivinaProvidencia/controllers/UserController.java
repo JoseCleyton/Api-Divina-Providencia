@@ -27,6 +27,7 @@ import com.br.apiDivinaProvidencia.exception.TokenInvalidException;
 import com.br.apiDivinaProvidencia.services.JwtService;
 import com.br.apiDivinaProvidencia.services.impl.EmailService;
 import com.br.apiDivinaProvidencia.services.impl.UserServiceImpl;
+import com.sendgrid.helpers.mail.Mail;
 
 @RestController
 @RequestMapping(path = "/user")
@@ -62,13 +63,13 @@ public class UserController {
 		}
 	}
 
-	@PostMapping(path = "auth/forgetPassword")
-	public void forgetPassword(@RequestBody String email) {
+	@PostMapping(path = "/auth/forgetPassword")
+	public ResponseEntity<Mail> forgetPassword(@RequestBody String login) throws Exception {
 		try {
-			this.emailService.sendEmailForgetPassword(email);
+			return ResponseEntity.ok(this.emailService.sendEmailForgetPassword(login));
 
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			throw e;
 		}
 	}
 
@@ -88,7 +89,7 @@ public class UserController {
 
 	}
 
-	@PutMapping(path="auth/updatePassword")
+	@PostMapping(path = "auth/updatePassword")
 	public ResponseEntity<UserDTO> updatePassword(@RequestBody User user) {
 		String senhaCriptografada = new BCryptPasswordEncoder().encode(user.getPassword());
 		user.setPassword(senhaCriptografada);

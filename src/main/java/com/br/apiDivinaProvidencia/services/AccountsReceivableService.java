@@ -9,5 +9,6 @@ public interface AccountsReceivableService {
 	AccountsReceivable checkout(AccountsReceivable accountsReceivable);
 	AccountsReceivable checkin(AccountsReceivable accountsReceivable);
 	AccountsReceivable findById(String id);
+	AccountsReceivable payInstallments(AccountsReceivable accountsReceivable);
 	
 }

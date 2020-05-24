@@ -11,6 +11,8 @@ public class AccountsReceivable {
 	private Order order;
 	private boolean checkout;
 	private String dateCheckout;
+	private int numberInstallments;
+	private int paidInstallments;
 
 	public String getId() {
 		return id;
@@ -39,4 +41,21 @@ public class AccountsReceivable {
 	public void setOrder(Order order) {
 		this.order = order;
 	}
+
+	public int getNumberInstallments() {
+		return numberInstallments;
+	}
+
+	public void setNumberInstallments(int numberInstallments) {
+		this.numberInstallments = numberInstallments;
+	}
+
+	public int getPaidInstallments() {
+		return paidInstallments;
+	}
+
+	public void setPaidInstallments(int paidInstallments) {
+		this.paidInstallments = paidInstallments;
+	}
+
 }
