@@ -47,9 +47,7 @@ public class StockController {
 
 	@PutMapping(path = "updateStock")
 	public ResponseEntity<List<Product>> updateStock(@RequestBody List<Product> products) {
-		products.forEach(p -> {
-			this.stockService.update(p);
-		});
+		products.stream().forEach(p -> this.stockService.update(p));
 		return ResponseEntity.ok(this.stockService.findAll());
 	}
 }

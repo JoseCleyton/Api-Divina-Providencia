@@ -6,9 +6,15 @@ import com.br.apiDivinaProvidencia.documents.AccountsReceivable;
 
 public interface AccountsReceivableService {
 	List<AccountsReceivable> findAll();
+
+	List<AccountsReceivable> findOpens();
+
 	AccountsReceivable checkout(AccountsReceivable accountsReceivable);
+
 	AccountsReceivable checkin(AccountsReceivable accountsReceivable);
+
 	AccountsReceivable findById(String id);
+
 	AccountsReceivable payInstallments(AccountsReceivable accountsReceivable);
-	
+
 }

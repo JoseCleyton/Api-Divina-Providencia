@@ -33,7 +33,7 @@ public class JwtService {
 		Instant instant = dataHoraExpiracao.atZone(ZoneId.systemDefault()).toInstant();
 		Date data = Date.from(instant);
 
-		return Jwts.builder().setSubject(email).setExpiration(data).signWith(SignatureAlgorithm.HS512, this.secret)
+		return Jwts.builder().setSubject(email.trim()).setExpiration(data).signWith(SignatureAlgorithm.HS512, this.secret)
 				.compact();
 	}
 

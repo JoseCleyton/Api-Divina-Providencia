@@ -1,20 +1,15 @@
 package com.br.apiDivinaProvidencia.controllers;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -22,12 +17,11 @@ import com.br.apiDivinaProvidencia.documents.User;
 import com.br.apiDivinaProvidencia.documents.dto.CredentialsDTO;
 import com.br.apiDivinaProvidencia.documents.dto.TokenDTO;
 import com.br.apiDivinaProvidencia.documents.dto.UserDTO;
+import com.br.apiDivinaProvidencia.exception.NotFoundException;
 import com.br.apiDivinaProvidencia.exception.PasswordInvalid;
-import com.br.apiDivinaProvidencia.exception.TokenInvalidException;
 import com.br.apiDivinaProvidencia.services.JwtService;
 import com.br.apiDivinaProvidencia.services.impl.EmailService;
 import com.br.apiDivinaProvidencia.services.impl.UserServiceImpl;
-import com.sendgrid.helpers.mail.Mail;
 
 @RestController
 @RequestMapping(path = "/user")
@@ -64,23 +58,19 @@ public class UserController {
 	}
 
 	@PostMapping(path = "/auth/forgetPassword")
-	public ResponseEntity<Mail> forgetPassword(@RequestBody String login) throws Exception {
-		try {
-			return ResponseEntity.ok(this.emailService.sendEmailForgetPassword(login));
-
-		} catch (Exception e) {
-			throw e;
-		}
+	public void forgetPassword(@RequestBody String login) throws Exception {
+		System.out.println(login);
+		this.emailService.sendEmailForgetPassword(login);
 	}
 
 	@PostMapping(path = "auth/forgetPassword/validateLink")
-	public ResponseEntity<UserDTO> validateLink(@RequestBody String token) {
+	public ResponseEntity<UserDTO> validateLink(@RequestBody String token)
+			throws com.br.apiDivinaProvidencia.exception.UsernameNotFoundException {
 		if (this.jwtService.tokenIsValid(token)) {
 			String login = this.jwtService.getLoginUser(token);
-			User user = this.userService.getUserByLogin(login);
-			if (user == null) {
-				throw new UsernameNotFoundException("Usuário não encontrado");
-			}
+			User user = this.userService.getUserByLogin(login)
+					.orElseThrow(com.br.apiDivinaProvidencia.exception.UsernameNotFoundException::new);
+
 			UserDTO userDTO = new UserDTO(user.getId(), user.getLogin(), user.isAdmin());
 			return ResponseEntity.ok(userDTO);
 		} else {

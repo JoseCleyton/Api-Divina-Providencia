@@ -1,6 +1,7 @@
 package com.br.apiDivinaProvidencia.services.impl;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,6 +44,12 @@ public class AccountsReceivableServiceImpl implements AccountsReceivableService 
 	@Override
 	public AccountsReceivable payInstallments(AccountsReceivable accountsReceivable) {
 		return this.accountsReceivableRepository.save(accountsReceivable);
+	}
+
+	@Override
+	public List<AccountsReceivable> findOpens() {
+		return this.accountsReceivableRepository.findAll().stream().filter(a -> !a.isCheckout())
+				.collect(Collectors.toList());
 	}
 
 }

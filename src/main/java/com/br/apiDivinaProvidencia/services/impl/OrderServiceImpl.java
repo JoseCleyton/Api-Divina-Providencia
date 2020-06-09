@@ -1,6 +1,9 @@
 package com.br.apiDivinaProvidencia.services.impl;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,8 +24,8 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public Order findById(String id) {
-		return null;
+	public Optional<Order> findById(String id) {
+		return this.orderRepository.findById(id);
 	}
 
 	@Override
@@ -38,6 +41,20 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public void removeUser(String id) {
 		this.orderRepository.deleteById(id);
+	}
+
+	@Override
+	public double findByOrderMonth(int orderMonth) {
+		return this.orderRepository.findAll().stream().filter(o -> o.getOrderMonth() == orderMonth)
+				.mapToDouble(o -> o.getOrderValue()).sum();
+
+	}
+
+	@Override
+	public List<Order> findByOpens() {
+		return this.orderRepository.findAll().stream()
+				.filter(o -> o.getStatus().equalsIgnoreCase("aberto"))
+				.collect(Collectors.toList());
 	}
 
 }
