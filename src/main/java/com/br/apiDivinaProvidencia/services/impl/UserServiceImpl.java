@@ -58,17 +58,14 @@ public class UserServiceImpl implements UserDetailsService {
 		return this.userRepository.findByLogin(login.trim());
 	}
 
-	public boolean userValid(String login) {
-		boolean toReturn = false;
+	public Optional<User> userValid(String login) {
+
 		List<User> users = this.userRepository.findAll();
-		for (User user : users) {
-			System.out.println(user.getLogin());
-			if (user.getLogin().equals(login.trim())) {
-				toReturn = true;
-				System.out.println("valido");
-			}
-		}
-		return toReturn;
+		
+		return users.stream()
+				.filter(u -> u.getLogin().equalsIgnoreCase(login.trim()))
+				.findFirst();
+
 	}
 
 }

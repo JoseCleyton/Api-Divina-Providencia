@@ -17,8 +17,8 @@ import com.br.apiDivinaProvidencia.documents.User;
 import com.br.apiDivinaProvidencia.documents.dto.CredentialsDTO;
 import com.br.apiDivinaProvidencia.documents.dto.TokenDTO;
 import com.br.apiDivinaProvidencia.documents.dto.UserDTO;
-import com.br.apiDivinaProvidencia.exception.NotFoundException;
 import com.br.apiDivinaProvidencia.exception.PasswordInvalid;
+import com.br.apiDivinaProvidencia.exception.TokenInvalidException;
 import com.br.apiDivinaProvidencia.services.JwtService;
 import com.br.apiDivinaProvidencia.services.impl.EmailService;
 import com.br.apiDivinaProvidencia.services.impl.UserServiceImpl;
@@ -58,23 +58,21 @@ public class UserController {
 	}
 
 	@PostMapping(path = "/auth/forgetPassword")
-	public void forgetPassword(@RequestBody String login) throws Exception {
-		System.out.println(login);
-		this.emailService.sendEmailForgetPassword(login);
+	public void forgetPassword(@RequestBody User user) throws Exception {
+		this.emailService.sendEmailForgetPassword(user.getLogin());
 	}
 
 	@PostMapping(path = "auth/forgetPassword/validateLink")
 	public ResponseEntity<UserDTO> validateLink(@RequestBody String token)
-			throws com.br.apiDivinaProvidencia.exception.UsernameNotFoundException {
-		if (this.jwtService.tokenIsValid(token)) {
-			String login = this.jwtService.getLoginUser(token);
-			User user = this.userService.getUserByLogin(login)
-					.orElseThrow(com.br.apiDivinaProvidencia.exception.UsernameNotFoundException::new);
+			throws TokenInvalidException, com.br.apiDivinaProvidencia.exception.UsernameNotFoundException {
 
-			UserDTO userDTO = new UserDTO(user.getId(), user.getLogin(), user.isAdmin());
-			return ResponseEntity.ok(userDTO);
+		if (this.jwtService.tokenIsValid(token).isPresent()) {
+			String login = this.jwtService.getLoginUser(token).get();
+			User user = this.userService.getUserByLogin(login)
+					.orElseThrow(() -> new com.br.apiDivinaProvidencia.exception.UsernameNotFoundException());
+			return ResponseEntity.ok(new UserDTO(user.getId(), user.getLogin(), user.isAdmin()));
 		} else {
-			return ResponseEntity.badRequest().body(null);
+			return ResponseEntity.badRequest().build();
 		}
 
 	}

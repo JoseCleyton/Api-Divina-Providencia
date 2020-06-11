@@ -1,6 +1,10 @@
 package com.br.apiDivinaProvidencia.services.impl;
 
+import com.br.apiDivinaProvidencia.documents.User;
 import com.br.apiDivinaProvidencia.services.JwtService;
+
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -22,7 +26,7 @@ public class EmailService {
 
 	public void sendEmailForgetPassword(String login) {
 		String token = this.jwtService.generatedTokenWithExpirationSendEmail(login, "30");
-		if (this.userServiceImpl.userValid(login)) {
+		this.userServiceImpl.userValid(login).ifPresent(u -> {
 			SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
 
 			simpleMailMessage.setFrom(this.from);
@@ -31,7 +35,8 @@ public class EmailService {
 			simpleMailMessage.setText(this.message + "\n" + link + token);
 
 			this.javaMailSender.send(simpleMailMessage);
-
-		}
+			
+		});
+		
 	}
 }

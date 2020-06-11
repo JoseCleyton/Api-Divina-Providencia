@@ -11,6 +11,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
 import java.util.Date;
+import java.util.Optional;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -33,28 +34,28 @@ public class JwtService {
 		Instant instant = dataHoraExpiracao.atZone(ZoneId.systemDefault()).toInstant();
 		Date data = Date.from(instant);
 
-		return Jwts.builder().setSubject(email.trim()).setExpiration(data).signWith(SignatureAlgorithm.HS512, this.secret)
-				.compact();
+		return Jwts.builder().setSubject(email.trim()).setExpiration(data)
+				.signWith(SignatureAlgorithm.HS512, this.secret).compact();
 	}
 
-	private Claims getClaims(String token) throws ExpiredJwtException {
-		return Jwts.parser().setSigningKey(this.secret).parseClaimsJws(token).getBody();
+	private Optional<Claims> getClaims(String token) throws ExpiredJwtException {
+		return Optional.ofNullable((Jwts.parser().setSigningKey(this.secret).parseClaimsJws(token).getBody()));
 	}
 
-	public boolean tokenIsValid(String token) {
+	public Optional<Boolean> tokenIsValid(String token) {
 
 		try {
-			Claims claims = getClaims(token);
+			Claims claims = getClaims(token).get();
 			Date dataExpiracao = claims.getExpiration();
 			LocalDateTime data = dataExpiracao.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-			return !LocalDateTime.now().isAfter(data);
+			return Optional.of(!LocalDateTime.now().isAfter(data));
 		} catch (Exception e) {
-			return false;
+			return Optional.empty();
 		}
 	}
 
-	public String getLoginUser(String token) throws ExpiredJwtException {
-		return (String) this.getClaims(token).getSubject();
+	public Optional<String> getLoginUser(String token) throws ExpiredJwtException {
+		return Optional.ofNullable(this.getClaims(token).get().getSubject());
 	}
 
 }
