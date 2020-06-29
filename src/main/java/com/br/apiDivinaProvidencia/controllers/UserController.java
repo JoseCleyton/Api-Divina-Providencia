@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -36,8 +37,8 @@ public class UserController {
 
 	@PostMapping(path = "/save")
 	public ResponseEntity<UserDTO> save(@RequestBody User user) {
-		String senhaCriptografada = new BCryptPasswordEncoder().encode(user.getPassword());
-		user.setPassword(senhaCriptografada);
+		String passwordEncrypted = new BCryptPasswordEncoder().encode(user.getPassword());
+		user.setPassword(passwordEncrypted);
 		User u = this.userService.save(user);
 		UserDTO userDTO = new UserDTO(u.getId(), u.getLogin(), u.isAdmin());
 		return ResponseEntity.ok(userDTO);
@@ -58,8 +59,9 @@ public class UserController {
 	}
 
 	@PostMapping(path = "/auth/forgetPassword")
-	public void forgetPassword(@RequestBody User user) throws Exception {
-		this.emailService.sendEmailForgetPassword(user.getLogin());
+	public ResponseEntity<SimpleMailMessage> forgetPassword(@RequestBody User user) throws Exception {
+		return ResponseEntity.ok(this.emailService.sendEmailForgetPassword(user.getLogin())
+				.orElseThrow(() -> new com.br.apiDivinaProvidencia.exception.UsernameNotFoundException()));
 	}
 
 	@PostMapping(path = "auth/forgetPassword/validateLink")

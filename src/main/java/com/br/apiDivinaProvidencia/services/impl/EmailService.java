@@ -1,6 +1,5 @@
 package com.br.apiDivinaProvidencia.services.impl;
 
-import com.br.apiDivinaProvidencia.documents.User;
 import com.br.apiDivinaProvidencia.services.JwtService;
 
 import java.util.Optional;
@@ -24,19 +23,20 @@ public class EmailService {
 	private String message = "Caso não tenha feito essa solicitação desconsidere essa mensagem! \nClique no link abaixo para realizar a alteração da senha. Link válido por 30 minutos.";
 	private String link = "https://divinaprovidencia-dev.firebaseapp.com/auth/forgetPassword/";
 
-	public void sendEmailForgetPassword(String login) {
+	public Optional<SimpleMailMessage> sendEmailForgetPassword(String login) {
+		SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
 		String token = this.jwtService.generatedTokenWithExpirationSendEmail(login, "30");
 		this.userServiceImpl.userValid(login).ifPresent(u -> {
-			SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
-
 			simpleMailMessage.setFrom(this.from);
 			simpleMailMessage.setTo(login.trim());
 			simpleMailMessage.setSubject(this.title);
 			simpleMailMessage.setText(this.message + "\n" + link + token);
 
 			this.javaMailSender.send(simpleMailMessage);
-			
+
 		});
-		
+
+		return Optional.ofNullable(simpleMailMessage);
+
 	}
 }

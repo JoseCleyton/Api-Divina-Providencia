@@ -37,7 +37,6 @@ public class UserServiceImpl implements UserDetailsService {
 	}
 
 	public User authenticate(User user) throws PasswordInvalid {
-		this.loadUserByUsername(user.getLogin());
 		Optional<User> u = this.userRepository.findByLogin(user.getLogin());
 		if (passwordEncoder.matches(user.getPassword(), u.get().getPassword())) {
 			return u.get();
